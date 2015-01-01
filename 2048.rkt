@@ -38,6 +38,11 @@
 
 (put-random-piece '((0 2 0 0) (2 5 8 16) (0 4 4 8) (2 0 0 0)))
 
+(define (init-board n)
+  (put-random-piece (put-random-piece (make-board n))))
+
+(init-board 4)
+
 (define (merge row)
   (cond [(<= (length row) 1) row]
         [(= (first row) (second row))
