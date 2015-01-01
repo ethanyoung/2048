@@ -1,4 +1,4 @@
-2048
-====
+# 2048
 
-The game implemented in racket
+
+The game implemented in racket-lang.
