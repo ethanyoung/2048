@@ -74,3 +74,8 @@
   ((compose1 transpose move-left transpose) lst))
 (define (move-down lst)
   ((compose1 transpose move-right transpose) lst))
+
+(define ALL-OPS (list move-right move-down move-left move-up))
+(define (finished? lst)
+  (andmap (λ (op) (equal? lst (op lst))) ALL-OPS))
+(finished? '((2 8 4 2) (8 4 8 16) (4 32 2 4) (2 16 4 2)))
