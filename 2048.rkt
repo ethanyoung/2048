@@ -14,3 +14,34 @@
   (choice PIECE_DIST))
 
 (get-a-piece)
+
+(define (avail? lst)
+  (if (list? lst)
+    (ormap avail? lst)
+    (zero? lst)))
+
+(define (get-empty-refs lst zero-fun?)
+  (for/list ([item lst]
+             [i (range (length lst))]
+             #:when (zero-fun? item))
+            i))
+
+(define (put-random-piece lst)
+  (if (avail? lst)
+    (if (list? lst)
+      (let* ([i (choice (get-empty-refs lst avail?))]
+             [v (list-ref lst i)])
+        (append (take lst i)
+                (cons (put-random-piece v) (drop lst (add1 i)))))
+      (get-a-piece))
+    lst))
+
+(put-random-piece '((0 2 0 0) (2 5 8 16) (0 4 4 8) (2 0 0 0)))
+
+(define (merge row)
+  (cond [(<= (length row) 1) row]
+        [(= (first row) (second row))
+         (cons (* 2 (first row)) (merge (drop row 2)))]
+        [else (cons (first row) (merge (rest row)))]))
+
+(merge '(2 2 2 4 4 4 8))
