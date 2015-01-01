@@ -50,3 +50,27 @@
         [else (cons (first row) (merge (rest row)))]))
 
 (merge '(2 2 2 4 4 4 8))
+
+(define (move-row row v left?)
+  (let* ([n (length row)]
+         [l (merge (filter (λ (x) (not (zero? x))) row))]
+         [padding (make-list (- n (length l)) v)])
+    (if left?
+      (append l padding)
+      (append padding l))))
+
+(define (move lst v left?)
+  (map (λ (x) (move-row x v left?)) lst))
+
+(move '((0 2 0 0) (2 4 8 16) (0 4 4 8) (2 0 0 0)) 0 #t)
+
+(define (move-left lst)
+  (put-random-piece (move lst 0 #t)))
+(define (move-right lst)
+  (put-random-piece (move lst 0 #f)))
+(define (transpose lsts)
+  (apply map list lsts))
+(define (move-up lst)
+  ((compose1 transpose move-left transpose) lst))
+(define (move-down lst)
+  ((compose1 transpose move-right transpose) lst))
